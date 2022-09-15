@@ -1,0 +1,33 @@
+@import "./base.css";
+
+#app {
+  font-weight: normal;
+}
+
+a,
+.green {
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+}
+
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(160, 100%, 37%, 0.2);
+  }
+}
+
+label {
+  margin-bottom: 10px;
+  margin-top: 5px;
+}
+
+h3 {
+  font-size: 40px;
+  margin: 20px 0 10px 0;
+}
+
+input[type="text"],
+input[type="number"] {
+  padding: 10px;
+}

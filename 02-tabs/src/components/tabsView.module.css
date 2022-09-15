@@ -1,0 +1,23 @@
+.tabsContainer {
+  display: flex;
+}
+
+.tab {
+  min-width: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  border: none;
+  background-color: #eee;
+  cursor: pointer;
+}
+
+.activeTab {
+  border-top: solid 2px rgb(46, 145, 245);
+  background-color: white;
+  border-left: solid 1px #eee;
+  border-right: solid 1px #eee;
+  height: 48px;
+  transition: all 1s ease;
+}

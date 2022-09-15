@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      .container {
+        width: 800px;
+        margin: 0 auto;
+      }
+      .colorContainer {
+        display: flex;
+        gap: 10px;
+      }
+      #items {
+        margin: 10px 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .color {
+        border: solid 1px black;
+        width: 100px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+      }
+
+      .title {
+        display: flex;
+        align-items: center;
+        font-size: 30px;
+        font-weight: bold;
+        width: 200px;
+      }
+
+      form {
+        width: 400px;
+        margin: 0 auto;
+        padding: 10px 0;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      input[type="text"] {
+        padding: 5px;
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      input[type="submit"] {
+        padding: 10px 0;
+        background-color: rgb(27, 71, 159);
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Paleta de colores</h1>
+    <div class="container">
+      <form action="/register" method="post">
+        <label for="title">Title</label>
+        <input type="text" name="title" id="" />
+        <div>
+          <input type="color" name="color1" id="" />
+          <input type="color" name="color2" id="" />
+          <input type="color" name="color3" id="" />
+          <input type="color" name="color4" id="" />
+        </div>
+
+        <input type="submit" value="Create palette" />
+      </form>
+
+      <div id="items"></div>
+    </div>
+
+    <script>
+      async function getColors() {
+        try {
+          const res = await fetch("/getAll");
+          const json = await res.json();
+
+          console.log(json);
+
+          if (json && json.length > 0) {
+            const items = json.map((item) => {
+              const div1 = document.createElement("div");
+              div1.textContent = item.color1;
+              div1.classList.add("color");
+              div1.style.backgroundColor = item.color1;
+
+              const div2 = document.createElement("div");
+              div2.textContent = item.color2;
+              div2.classList.add("color");
+              div2.style.backgroundColor = item.color2;
+
+              const div3 = document.createElement("div");
+              div3.textContent = item.color3;
+              div3.classList.add("color");
+              div3.style.backgroundColor = item.color3;
+
+              const div4 = document.createElement("div");
+              div4.textContent = item.color4;
+              div4.classList.add("color");
+              div4.style.backgroundColor = item.color4;
+
+              const div5 = document.createElement("div");
+              div5.textContent = item.title;
+              div5.classList.add("title");
+
+              const container = document.createElement("div");
+              container.classList.add("colorContainer");
+              container.append(div5, div1, div2, div3, div4);
+              return container;
+            });
+
+            console.log(items);
+
+            document.querySelector("#items").append(...items);
+          }
+        } catch (error) {}
+      }
+
+      getColors();
+    </script>
+  </body>
+</html>
