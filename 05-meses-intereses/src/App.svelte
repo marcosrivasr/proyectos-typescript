@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Calculator } from "./types/types";
+  import LineItem from "./components/LineItem.svelte";
   export let price: number;
   export let discount: number;
   export let months: number;
@@ -50,7 +51,7 @@
 <main>
   <form action="">
     <label for="">Price</label>
-    <input type="text" name="" id="" bind:value={price} />
+    <input type="number" name="" id="" bind:value={price} />
 
     <label for="Discount">Discount</label>
     <input type="number" name="" id="" bind:value={discount} />
@@ -59,29 +60,43 @@
     <input type="number" name="" id="" max="12" bind:value={months} />
 
     <div>
-      <label for="interests">Interests</label>
       <input type="checkbox" name="" id="" bind:checked={withInterest} />
+      Interests
 
-      <label for="interest">% Anual interest</label>
-      <input type="number" name="" id="" bind:value={interest} />{interest}
+      {#if withInterest}
+        <label for="interest">% Anual interest</label>
+        <input type="number" name="" id="" bind:value={interest} />
+      {/if}
     </div>
 
-    <div>
+    <div class="center">
       <button on:click={handleClick}>Calculate</button>
     </div>
   </form>
 
-  <div class="response">
-    {calculator.total}
+  <div class="results">
+    {#if calculator.total > 0}
+      <div class="results-view">
+        <LineItem title="Costo" value={calculator.qty} />
+        <LineItem
+          title={`Discount (${calculator.discount}%)`}
+          value={calculator.discountQty}
+        />
+        <LineItem title="Subtotal" value={calculator.subtotal} />
+        <LineItem title="Per month" value={calculator.totalPerMonth} />
+
+        <LineItem title="Total" value={calculator.total} />
+      </div>
+    {/if}
   </div>
 </main>
 
 <style>
   main {
-    text-align: center;
-    padding: 1em;
     max-width: 240px;
     margin: 0 auto;
+    display: flex;
+    width: 800px;
   }
 
   h1 {
@@ -89,6 +104,50 @@
     text-transform: uppercase;
     font-size: 4em;
     font-weight: 100;
+  }
+
+  form {
+    background-color: white;
+    width: 40%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  form label {
+    display: block;
+    padding: 15px 0 10px 0;
+  }
+
+  form input[type="text"],
+  form input[type="number"] {
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: solid 1px #ccc;
+    outline: none;
+  }
+
+  .results {
+    background-color: rgb(30, 135, 205);
+    flex: 1;
+    width: 60%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .results .results-view {
+    background-color: white;
+    width: 90%;
+    height: 90%;
+    padding: 40px;
+    box-sizing: border-box;
+  }
+
+  .center {
+    display: flex;
+    justify-content: center;
   }
 
   @media (min-width: 640px) {
