@@ -27,12 +27,11 @@ function renderView(tweetView) {
         view.classList.add("mainContainer");
         (_a = document.querySelector("#tweets")) === null || _a === void 0 ? void 0 : _a.append(view);
     }
-    for (var _i = 0, _b = tweetView.tweets; _i < _b.length; _i++) {
-        var tweet = _b[_i];
-        renderTweet(tweetView, view, tweet);
+    for (var i = 0; i < tweetView.tweets.length; i++) {
+        renderTweet(tweetView, view, tweetView.tweets[i], i === tweetView.tweets.length - 1);
     }
 }
-function renderTweet(tweetView, view, tweet) {
+function renderTweet(tweetView, view, tweet, last) {
     var tweetContainer = document.createElement("div");
     tweetContainer.id = "container-" + tweet.id;
     tweetContainer.classList.add("tweetContainer");
@@ -43,6 +42,8 @@ function renderTweet(tweetView, view, tweet) {
     textarea.id = "textarea" + tweet.id;
     textarea.value = tweet.message;
     textarea.maxLength = 250;
+    var countContainer = document.createElement("div");
+    countContainer.classList.add("countContainer");
     var buttonAddMore = document.createElement("button");
     buttonAddMore.classList.add("button", "buttonNew");
     buttonAddMore.value = "Add another tweet";
@@ -51,14 +52,17 @@ function renderTweet(tweetView, view, tweet) {
         e.preventDefault();
         var anotherTweet = createTweet();
         tweetView.tweets.push(anotherTweet);
-        console.log(tweetView.tweets);
         renderView(tweetView);
     });
     textarea.addEventListener("input", function (e) {
+        countContainer.textContent = textarea.value.length.toString() + "/250";
         var value = e.target.value;
         updateTweet(tweetView, tweet, value);
     });
-    form.append(textarea, buttonAddMore);
+    form.append(textarea, countContainer);
+    if (last) {
+        form.append(buttonAddMore);
+    }
     view.append(tweetContainer);
 }
 function updateTweet(tweetView, tweet, value) {

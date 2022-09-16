@@ -45,12 +45,23 @@ function renderView(tweetView: TweetView) {
     view.classList.add("mainContainer");
     document.querySelector("#tweets")?.append(view);
   }
-  for (const tweet of tweetView.tweets) {
-    renderTweet(tweetView, view, tweet);
+
+  for (let i = 0; i < tweetView.tweets.length; i++) {
+    renderTweet(
+      tweetView,
+      view,
+      tweetView.tweets[i],
+      i === tweetView.tweets.length - 1
+    );
   }
 }
 
-function renderTweet(tweetView: TweetView, view: HTMLDivElement, tweet: Tweet) {
+function renderTweet(
+  tweetView: TweetView,
+  view: HTMLDivElement,
+  tweet: Tweet,
+  last: boolean
+) {
   const tweetContainer = document.createElement("div");
   tweetContainer.id = "container-" + tweet.id;
   tweetContainer.classList.add("tweetContainer");
@@ -64,6 +75,9 @@ function renderTweet(tweetView: TweetView, view: HTMLDivElement, tweet: Tweet) {
   textarea.value = tweet.message;
   textarea.maxLength = 250;
 
+  const countContainer = document.createElement("div");
+  countContainer.classList.add("countContainer");
+
   const buttonAddMore = document.createElement("button");
   buttonAddMore.classList.add("button", "buttonNew");
   buttonAddMore.value = "Add another tweet";
@@ -73,16 +87,19 @@ function renderTweet(tweetView: TweetView, view: HTMLDivElement, tweet: Tweet) {
     e.preventDefault();
     const anotherTweet = createTweet();
     tweetView.tweets.push(anotherTweet);
-    console.log(tweetView.tweets);
     renderView(tweetView);
   });
 
   textarea.addEventListener("input", (e: Event) => {
+    countContainer.textContent = textarea.value.length.toString() + "/250";
     const value = (e.target as HTMLTextAreaElement).value;
     updateTweet(tweetView, tweet, value);
   });
 
-  form.append(textarea, buttonAddMore);
+  form.append(textarea, countContainer);
+  if (last) {
+    form.append(buttonAddMore);
+  }
 
   view.append(tweetContainer);
 }
