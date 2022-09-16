@@ -2,27 +2,39 @@
 import { useRecipeStore } from "../stores/recipeStore";
 import IngredientsView from "@/components/IngredientsView.vue";
 import StepsView from "@/components/StepsView.vue";
+import { reactive } from "vue";
+
+const modalStyles = reactive({
+  display: useRecipeStore().currentRecipe.id !== undefined ? "block" : "none",
+});
 
 function handleClick(e: Event, id: string) {
   e.preventDefault();
 
   useRecipeStore().loadRecipe(id);
 }
+
+function handleCloseModal() {
+  useRecipeStore().closeRecipe();
+  console.log(modalStyles);
+}
 </script>
 
 <template>
   <div class="container">
-    <div class="sidebar">
+    <div class="items">
       <ul>
         <li v-for="item in useRecipeStore().items" key="item.id">
           <a href="#" @click="(e) => handleClick(e, item.id)">
+            <img :src="item.picture" width="200" alt="" />
             {{ item.name }}
           </a>
         </li>
       </ul>
     </div>
-    <main>
-      <div v-if="useRecipeStore().currentRecipe.id">
+    <main :style="modalStyles" v-if="useRecipeStore().currentRecipe.id">
+      <div><button @click="handleCloseModal">Close</button></div>
+      <div class="content">
         <h1>
           {{ useRecipeStore().currentRecipe.name }}
         </h1>
@@ -53,32 +65,59 @@ function handleClick(e: Event, id: string) {
 </template>
 
 <style scoped>
-.sidebar {
-  width: 300px;
-  position: fixed;
-  left: 0;
-  height: 100%;
-  background-color: rgb(9, 43, 54);
+.items {
+  height: 100vh;
 }
-.sidebar ul {
+.items ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.sidebar a {
+.items a {
   display: block;
   padding: 10px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 22px;
 }
 
-.sidebar a:hover {
+.items a:hover {
   background-color: white;
   color: black;
 }
 
+.items a img {
+  width: 500px;
+  height: 300px;
+  object-fit: cover;
+  background-color: black;
+}
+
 main {
-  margin-left: 300px;
   padding: 20px;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  height: 100vh;
+  background-color: bisque;
+}
+
+main .content {
+  width: 500px;
+  margin: 0 auto;
+}
+
+main .content h1 {
+  font-weight: bolder;
+}
+main .content h1,
+main .content h3 {
+  text-align: center;
 }
 
 h1 {

@@ -19,4 +19,5 @@ export interface Recipe {
   duration: number;
   ingredients: Ingredient[];
   steps: Step[];
+  picture: string;
 }

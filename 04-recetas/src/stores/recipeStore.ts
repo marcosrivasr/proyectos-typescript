@@ -4,16 +4,7 @@ import type { Recipe } from "@/types/types";
 import type { ReactiveEffect } from "vue";
 
 export const useRecipeStore = defineStore("recipeStore", () => {
-  const items: Recipe[] = reactive([
-    {
-      id: crypto.randomUUID(),
-      name: "enchiladas",
-      duration: 15,
-      unit: "min",
-      ingredients: [],
-      steps: [],
-    },
-  ]);
+  const items: Recipe[] = reactive([]);
 
   const currentRecipe: Partial<Recipe> = reactive({});
 
@@ -32,5 +23,13 @@ export const useRecipeStore = defineStore("recipeStore", () => {
     }
   }
 
-  return { add, items, currentRecipe, loadRecipe };
+  function closeRecipe() {
+    currentRecipe.id = undefined;
+    currentRecipe.duration = 0;
+    currentRecipe.ingredients = [];
+    currentRecipe.name = "";
+    currentRecipe.steps = [];
+  }
+
+  return { add, items, currentRecipe, loadRecipe, closeRecipe };
 });
