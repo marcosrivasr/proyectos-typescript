@@ -7,12 +7,13 @@
     <title>Document</title>
 
     <style>
+      * {
+      }
       body {
         font-family: Arial, Helvetica, sans-serif;
       }
 
       .container {
-        width: 800px;
         margin: 0 auto;
       }
       .colorContainer {
@@ -20,15 +21,19 @@
         gap: 10px;
       }
       #items {
-        margin: 10px 0;
+        margin: 40px 0;
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        justify-content: center;
+        gap: 40px;
       }
       .color {
-        border: solid 1px black;
-        width: 100px;
-        height: 100px;
+        font-size: 30px;
+        border-radius: 5px;
+        max-width: 400px;
+        max-height: 400px;
+        width: 100%;
+        height: 400px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -72,8 +77,8 @@
     <h1>Paleta de colores</h1>
     <div class="container">
       <form action="/register" method="post">
-        <label for="title">Title</label>
-        <input type="text" name="title" id="" />
+        <label for="title">Name of the palette</label>
+        <input type="text" name="title" id="" required />
         <div>
           <input type="color" name="color1" id="" />
           <input type="color" name="color2" id="" />
@@ -97,6 +102,9 @@
 
           if (json && json.length > 0) {
             const items = json.map((item) => {
+              const colorsContainer = document.createElement("div");
+              colorsContainer.classList.add("colorContainer");
+
               const div1 = document.createElement("div");
               div1.textContent = item.color1;
               div1.classList.add("color");
@@ -122,8 +130,8 @@
               div5.classList.add("title");
 
               const container = document.createElement("div");
-              container.classList.add("colorContainer");
-              container.append(div5, div1, div2, div3, div4);
+              colorsContainer.append(div1, div2, div3, div4);
+              container.append(div5, colorsContainer);
               return container;
             });
 
